@@ -145,7 +145,7 @@ public class TileMarkedInjector extends TileBase implements ITickable, ICrafting
 	public boolean validateCraftingInventory() {
 		if(!getStackInPedestal().isEmpty() && crafterPos != null) {
 			TileEntity tile = world.getTileEntity(crafterPos);
-			if(!tile.isInvalid() && tile instanceof IFusionCraftingInventory && ((IFusionCraftingInventory)tile).craftingInProgress()) {
+			if(tile instanceof IFusionCraftingInventory && !tile.isInvalid() && ((IFusionCraftingInventory)tile).craftingInProgress()) {
 				return true;
 			}
 		}

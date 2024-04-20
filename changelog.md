@@ -1,1 +1,1 @@
-Fix possible crash with marked injectors on servers  
+Fix possible NPE in injector crafter validation  
