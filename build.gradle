@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-e3412050"
+	id "com.crystaelix.loom" version "jitpack-19fc18ee"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -124,11 +124,11 @@ dependencies {
 	forge "net.minecraftforge:forge:1.16.5-36.2.39"
 
 	// Dependencies
-	modImplementation "curse.maven:packagedauto-308380:5174883"
+	modImplementation "curse.maven:packagedauto-308380:5272324"
 	modImplementation "codechicken:CodeChickenLib:1.16.5-4.0.7.445:universal"
 	modImplementation "com.brandon3055.brandonscore:BrandonsCore:1.16.5-3.0.15.248:universal"
 	modImplementation "com.brandon3055.draconicevolution:Draconic-Evolution:1.16.5-3.0.29.518:universal"
-	modImplementation "mezz.jei:jei-1.16.5:7.8.0.1009"
+	modImplementation "mezz.jei:jei-1.16.5:7.8.0.1011"
 	modImplementation "appeng:appliedenergistics2:8.4.7"
 	modImplementation "vazkii.patchouli:Patchouli:1.16.4-53.3"
 
@@ -137,7 +137,7 @@ dependencies {
 
 	// Performance
 	modImplementation "curse.maven:shutup-experimental-settings-407174:3188120"
-	modImplementation "curse.maven:modernfix-790626:5157663"
+	modImplementation "curse.maven:modernfix-790626:5203334"
 	modImplementation "curse.maven:ferritecore-429235:3435176"
 	modImplementation "curse.maven:lazy-dfu-forge-460819:3249059"
 }
