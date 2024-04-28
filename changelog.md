@@ -1,1 +1,1 @@
-Fix possible NPE in injector crafter validation  
+Recompile against PackagedAuto 1.0.12.46  
