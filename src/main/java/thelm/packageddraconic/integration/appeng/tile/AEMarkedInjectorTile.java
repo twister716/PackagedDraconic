@@ -10,6 +10,7 @@ import appeng.api.networking.IGridHost;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.energy.IEnergyGrid;
 import appeng.api.networking.security.IActionHost;
+import appeng.api.networking.security.IActionSource;
 import appeng.api.networking.storage.IStorageGrid;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.channels.IItemStorageChannel;
@@ -28,7 +29,7 @@ public class AEMarkedInjectorTile extends MarkedInjectorTile implements IGridHos
 
 	public boolean firstTick = true;
 	public BaseGridBlock<AEMarkedInjectorTile> gridBlock;
-	public MachineSource source;
+	public IActionSource source;
 	public IGridNode gridNode;
 
 	public AEMarkedInjectorTile() {
