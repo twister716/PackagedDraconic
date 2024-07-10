@@ -319,7 +319,6 @@ public class TileFusionCrafter extends TileBase implements ITickable, IPackageCr
 					}
 					return false;
 				}
-				syncTile(false);
 				markDirty();
 				return true;
 			}
@@ -382,7 +381,6 @@ public class TileFusionCrafter extends TileBase implements ITickable, IPackageCr
 		isWorking = false;
 		minTier = -1;
 		currentRecipe = null;
-		syncTile(false);
 		markDirty();
 	}
 
