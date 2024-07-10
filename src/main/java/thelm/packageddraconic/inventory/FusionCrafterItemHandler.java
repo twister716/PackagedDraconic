@@ -14,6 +14,13 @@ public class FusionCrafterItemHandler extends BaseItemHandler<FusionCrafterBlock
 	}
 
 	@Override
+	protected void onContentsChanged(int slot) {
+		if(slot < 2) {
+			sync(false);
+		}
+	}
+
+	@Override
 	public boolean isItemValid(int slot, ItemStack stack) {
 		if(slot == 2) {
 			return stack.getCapability(CapabilityEnergy.ENERGY).isPresent();

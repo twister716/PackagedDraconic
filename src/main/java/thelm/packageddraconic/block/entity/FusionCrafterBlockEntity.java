@@ -193,7 +193,6 @@ public class FusionCrafterBlockEntity extends BaseBlockEntity implements IPackag
 					}
 					return false;
 				}
-				sync(false);
 				setChanged();
 				return true;
 			}
@@ -235,7 +234,6 @@ public class FusionCrafterBlockEntity extends BaseBlockEntity implements IPackag
 		minTier = -1;
 		effectRecipe = null;
 		currentRecipe = null;
-		sync(false);
 		setChanged();
 	}
 
