@@ -193,7 +193,6 @@ public class FusionCrafterTile extends BaseTile implements ITickableTileEntity, 
 					}
 					return false;
 				}
-				syncTile(false);
 				setChanged();
 				return true;
 			}
@@ -236,7 +235,6 @@ public class FusionCrafterTile extends BaseTile implements ITickableTileEntity, 
 		minTier = -1;
 		effectRecipe = null;
 		currentRecipe = null;
-		syncTile(false);
 		setChanged();
 	}
 
