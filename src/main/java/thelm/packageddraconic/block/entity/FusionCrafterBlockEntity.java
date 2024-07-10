@@ -24,8 +24,6 @@ import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -38,10 +36,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import thelm.packagedauto.api.IPackageCraftingMachine;
@@ -61,12 +58,11 @@ import thelm.packageddraconic.recipe.IFusionPackageRecipeInfo;
 
 public class FusionCrafterBlockEntity extends BaseBlockEntity implements IPackageCraftingMachine, IFusionInventory, IFusionStateMachine {
 
-	public static final BlockEntityType<FusionCrafterBlockEntity> TYPE_INSTANCE = (BlockEntityType<FusionCrafterBlockEntity>)BlockEntityType.Builder.
+	public static final BlockEntityType<FusionCrafterBlockEntity> TYPE_INSTANCE = BlockEntityType.Builder.
 			of(MiscHelper.INSTANCE.<BlockEntityType.BlockEntitySupplier<FusionCrafterBlockEntity>>conditionalSupplier(
 					()->ModList.get().isLoaded("ae2"),
 					()->()->AEFusionCrafterBlockEntity::new, ()->()->FusionCrafterBlockEntity::new).get(),
-					FusionCrafterBlock.INSTANCE).
-			build(null).setRegistryName("packageddraconic:fusion_crafter");
+					FusionCrafterBlock.INSTANCE).build(null);
 
 	public static int energyCapacity = 5000;
 	public static int energyUsage = 5;
@@ -93,22 +89,22 @@ public class FusionCrafterBlockEntity extends BaseBlockEntity implements IPackag
 
 	@Override
 	protected Component getDefaultName() {
-		return new TranslatableComponent("block.packageddraconic.fusion_crafter");
+		return Component.translatable("block.packageddraconic.fusion_crafter");
 	}
 
 	public Component getMessage() {
 		if(isWorking) {
 			return null;
 		}
-		MutableComponent message = new TranslatableComponent("block.packageddraconic.fusion_crafter.injectors.usable");
-		MutableComponent usable = new TextComponent(" ");
+		MutableComponent message = Component.translatable("block.packageddraconic.fusion_crafter.injectors.usable");
+		MutableComponent usable = Component.literal(" ");
 		for(int i = 0; i <= 3; ++i) {
 			int usableInjectors = getEmptyInjectorsForTier(i).size();
 			if(usableInjectors > 0) {
 				if(!usable.getSiblings().isEmpty()) {
 					usable.append(", ");
 				}
-				usable.append(new TranslatableComponent("block.packageddraconic.fusion_crafter.injectors."+i, usableInjectors));
+				usable.append(Component.translatable("block.packageddraconic.fusion_crafter.injectors."+i, usableInjectors));
 			}
 		}
 		if(usable.getSiblings().isEmpty()) {
@@ -120,21 +116,21 @@ public class FusionCrafterBlockEntity extends BaseBlockEntity implements IPackag
 		}
 		if(Arrays.stream(requiredInjectors).anyMatch(i->i > 0)) {
 			message.append("\n");
-			message.append(new TranslatableComponent("block.packageddraconic.fusion_crafter.injectors.required"));
+			message.append(Component.translatable("block.packageddraconic.fusion_crafter.injectors.required"));
 			int[] actualRequiredInjectors = {
 					requiredInjectors[0]-requiredInjectors[1]-requiredInjectors[2]-requiredInjectors[3],
 					requiredInjectors[1]-requiredInjectors[2]-requiredInjectors[3],
 					requiredInjectors[2]-requiredInjectors[3],
 					requiredInjectors[3]
 			};
-			MutableComponent required = new TextComponent(" ");
+			MutableComponent required = Component.literal(" ");
 			for(int i = 0; i <= 3; ++i) {
 				int requiredInjectors = actualRequiredInjectors[i];
 				if(requiredInjectors > 0) {
 					if(!required.getSiblings().isEmpty()) {
 						required.append(", ");
 					}
-					required.append(new TranslatableComponent("block.packageddraconic.fusion_crafter.injectors."+i, requiredInjectors));
+					required.append(Component.translatable("block.packageddraconic.fusion_crafter.injectors."+i, requiredInjectors));
 				}
 			}
 			message.append("\n");
@@ -193,7 +189,6 @@ public class FusionCrafterBlockEntity extends BaseBlockEntity implements IPackag
 					}
 					return false;
 				}
-				sync(false);
 				setChanged();
 				return true;
 			}
@@ -235,7 +230,6 @@ public class FusionCrafterBlockEntity extends BaseBlockEntity implements IPackag
 		minTier = -1;
 		effectRecipe = null;
 		currentRecipe = null;
-		sync(false);
 		setChanged();
 	}
 
@@ -299,8 +293,8 @@ public class FusionCrafterBlockEntity extends BaseBlockEntity implements IPackag
 		int endIndex = isWorking ? 1 : 0;
 		for(Direction direction : Direction.values()) {
 			BlockEntity blockEntity = level.getBlockEntity(worldPosition.relative(direction));
-			if(blockEntity != null && !(blockEntity instanceof UnpackagerBlockEntity) && blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, direction.getOpposite()).isPresent()) {
-				IItemHandler itemHandler = blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, direction.getOpposite()).resolve().get();
+			if(blockEntity != null && !(blockEntity instanceof UnpackagerBlockEntity) && blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, direction.getOpposite()).isPresent()) {
+				IItemHandler itemHandler = blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, direction.getOpposite()).resolve().get();
 				for(int i = 1; i >= endIndex; --i) {
 					ItemStack stack = this.itemHandler.getStackInSlot(i);
 					if(stack.isEmpty()) {
@@ -315,9 +309,9 @@ public class FusionCrafterBlockEntity extends BaseBlockEntity implements IPackag
 
 	protected void chargeEnergy() {
 		ItemStack energyStack = itemHandler.getStackInSlot(2);
-		if(energyStack.getCapability(CapabilityEnergy.ENERGY, null).isPresent()) {
+		if(energyStack.getCapability(ForgeCapabilities.ENERGY, null).isPresent()) {
 			int energyRequest = Math.min(energyStorage.getMaxReceive(), energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored());
-			energyStorage.receiveEnergy(energyStack.getCapability(CapabilityEnergy.ENERGY).resolve().get().extractEnergy(energyRequest, false), false);
+			energyStorage.receiveEnergy(energyStack.getCapability(ForgeCapabilities.ENERGY).resolve().get().extractEnergy(energyRequest, false), false);
 			if(energyStack.getCount() <= 0) {
 				itemHandler.setStackInSlot(2, ItemStack.EMPTY);
 			}

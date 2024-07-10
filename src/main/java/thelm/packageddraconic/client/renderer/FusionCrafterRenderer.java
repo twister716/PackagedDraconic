@@ -4,13 +4,13 @@ import java.util.List;
 import java.util.Random;
 
 import com.brandon3055.brandonscore.utils.MathUtils;
-import com.brandon3055.draconicevolution.client.DEMiscSprites;
+import com.brandon3055.draconicevolution.client.AtlasTextureHelper;
 import com.brandon3055.draconicevolution.client.render.EffectLib;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.math.Quaternion;
+import com.mojang.math.Axis;
 
 import codechicken.lib.render.buffer.TransformingVertexConsumer;
 import codechicken.lib.vec.Quat;
@@ -23,11 +23,12 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import thelm.packagedauto.client.RenderTimer;
 import thelm.packageddraconic.block.entity.FusionCrafterBlockEntity;
@@ -41,7 +42,7 @@ public class FusionCrafterRenderer implements BlockEntityRenderer<FusionCrafterB
 	private RenderType particleType = RenderType.create("particle_type", DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 256, false, false,
 			RenderType.CompositeState.builder().
 			setShaderState(new RenderStateShard.ShaderStateShard(GameRenderer::getPositionColorTexLightmapShader)).
-			setTextureState(new RenderStateShard.TextureStateShard(DEMiscSprites.ATLAS_LOCATION, false, false)).
+			setTextureState(new RenderStateShard.TextureStateShard(TextureAtlas.LOCATION_PARTICLES, false, false)).
 			setWriteMaskState(new RenderStateShard.WriteMaskStateShard(true, true)).
 			createCompositeState(false));
 
@@ -63,8 +64,8 @@ public class FusionCrafterRenderer implements BlockEntityRenderer<FusionCrafterB
 			poseStack.pushPose();
 			poseStack.translate(0.5, 0.5, 0.5);
 			poseStack.scale(0.5F, 0.5F, 0.5F);mc.getFrameTime();
-			poseStack.mulPose(new Quaternion(0, (RenderTimer.INSTANCE.getTicks()+partialTicks)*0.8F, 0, true));
-			mc.getItemRenderer().renderStatic(stack, ItemTransforms.TransformType.FIXED, combinedLight, packetOverlay, poseStack, buffer, (int)blockEntity.getBlockPos().asLong());
+			poseStack.mulPose(Axis.YP.rotationDegrees((RenderTimer.INSTANCE.getTicks()+partialTicks)*0.8F));
+			mc.getItemRenderer().renderStatic(stack, ItemDisplayContext.FIXED, combinedLight, packetOverlay, poseStack, buffer, blockEntity.getLevel(), (int)blockEntity.getBlockPos().asLong());
 			poseStack.popPose();
 		}
 	}
@@ -75,7 +76,7 @@ public class FusionCrafterRenderer implements BlockEntityRenderer<FusionCrafterB
 		int ticks = RenderTimer.INSTANCE.getTicks();
 		float time = ticks+partialTicks;
 		poseStack.translate(0.5, 0.5, 0.5);
-		ParticleStatus pStatus = mc.options.particles;
+		ParticleStatus pStatus = mc.options.particles().get();
 		double particleSetting = pStatus == ParticleStatus.ALL ? 1 : pStatus == ParticleStatus.DECREASED ? 2/3D : 1/3D;
 		// Total particle allocation for ingredient effects
 		int maxParticles = (int)(1000*particleSetting);
@@ -106,7 +107,7 @@ public class FusionCrafterRenderer implements BlockEntityRenderer<FusionCrafterB
 				double x = radius*Mth.cos(rotX)*Mth.sin(rotY);
 				double y = radius*Mth.sin(rotX)*Mth.sin(rotY);
 				double z = radius*Mth.cos(rotY);
-				EffectLib.drawParticle(cameraRotation, builder, getTexture(DEMiscSprites.MIXED_PARTICLE), 1F, 0, 0, x, y, z, scale, 240);
+				EffectLib.drawParticle(cameraRotation, builder, getTexture(AtlasTextureHelper.MIXED_PARTICLE), 1F, 0, 0, x, y, z, scale, 240);
 			}
 		}
 		//Outer Loopy Effects
@@ -122,7 +123,7 @@ public class FusionCrafterRenderer implements BlockEntityRenderer<FusionCrafterB
 					double z = Mth.cos(rot)*2;
 					double y = Mth.cos(rot+loopOffset)*1;
 					float scale = 0.1F*(j/8F);
-					EffectLib.drawParticle(cameraRotation, builder, getTexture(DEMiscSprites.ENERGY_PARTICLE, j), 106/255F, 13/255F, 173/255F, x, y, z, scale, 240);
+					EffectLib.drawParticle(cameraRotation, builder, getTexture(AtlasTextureHelper.ENERGY_PARTICLE, j), 106/255F, 13/255F, 173/255F, x, y, z, scale, 240);
 				}
 			}
 			if(handler.injectTime > 0 && ticks % 5 == 0) {
@@ -162,7 +163,7 @@ public class FusionCrafterRenderer implements BlockEntityRenderer<FusionCrafterB
 			double x = ingred.pos.x+radius*Mth.cos(rotX)*Mth.sin(rotY);
 			double y = ingred.pos.y+radius*Mth.sin(rotX)*Mth.sin(rotY);
 			double z = ingred.pos.z+radius*Mth.cos(rotY);
-			EffectLib.drawParticle(cameraRotation, builder, getTexture(DEMiscSprites.ENERGY_PARTICLE), 0F, 0.8F+rand.nextFloat()*0.2F, 1F, x, y, z, scale, 240);
+			EffectLib.drawParticle(cameraRotation, builder, getTexture(AtlasTextureHelper.ENERGY_PARTICLE), 0F, 0.8F+rand.nextFloat()*0.2F, 1F, x, y, z, scale, 240);
 		}
 		// Charge Conversion Particles
 		int itemPCount = Math.min(48, totalParticles / 3);
@@ -185,7 +186,7 @@ public class FusionCrafterRenderer implements BlockEntityRenderer<FusionCrafterB
 			pos.normalize();
 			pos.multiply(MathUtils.nextFloat()*0.1875);
 			pos.add(ingred.pos);
-			EffectLib.drawParticle(cameraRotation, builder, getTexture(DEMiscSprites.SPELL_PARTICLE), 0.7F, 0F, 0F, pos.x, pos.y, pos.z, scale*pScale, 240);
+			EffectLib.drawParticle(cameraRotation, builder, getTexture(AtlasTextureHelper.SPELL_PARTICLE), 0.7F, 0F, 0F, pos.x, pos.y, pos.z, scale*pScale, 240);
 		}
 		// Beam Effect
 		double randOffset = 0.125;
@@ -203,7 +204,7 @@ public class FusionCrafterRenderer implements BlockEntityRenderer<FusionCrafterB
 				Vector3 start = ingred.pos.copy().add((0.5-rand.nextDouble())*randOffset*2, (0.5-rand.nextDouble())*randOffset*2, (0.5-rand.nextDouble())*randOffset*2);
 				Vector3 end = new Vector3((0.5-rand.nextDouble())*randOffset*2, (0.5-rand.nextDouble())*randOffset*2, (0.5-rand.nextDouble())*randOffset*2);
 				pos = MathUtils.interpolateVec3(start, end, (anim/10) % 1D);
-				EffectLib.drawParticle(cameraRotation, builder, getTexture(DEMiscSprites.SPARK_PARTICLE), 0.7F+(((float)anim/10F) % 1F)*0.3F, 0F, 0F, pos.x, pos.y, pos.z, scale, 240);
+				EffectLib.drawParticle(cameraRotation, builder, getTexture(AtlasTextureHelper.SPARK_PARTICLE), 0.7F+(((float)anim/10F) % 1F)*0.3F, 0F, 0F, pos.x, pos.y, pos.z, scale, 240);
 			}
 		}
 	}

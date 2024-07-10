@@ -66,7 +66,7 @@ public class FusionCrafterFXHandler implements Runnable {
 			float prevTick = rotationTick;
 			Vector3 corePos = Vector3.fromTileCenter(crafter);
 			if(runTick <= 0) {
-				crafter.getLevel().playLocalSound(corePos.x, corePos.y, corePos.z, DESounds.fusionComplete, SoundSource.BLOCKS, 0.5F, 0.5F, false);
+				crafter.getLevel().playLocalSound(corePos.x, corePos.y, corePos.z, DESounds.FUSION_COMPLETE.get(), SoundSource.BLOCKS, 0.5F, 0.5F, false);
 			}
 			if(runTick == -1) {
 				getIngredients(0).forEach(e->crafter.getLevel().addParticle(ParticleTypes.EXPLOSION, corePos.x+e.pos.x, corePos.y+e.pos.y, corePos.z + e.pos.z, 1, 0, 0));
@@ -75,7 +75,7 @@ public class FusionCrafterFXHandler implements Runnable {
 			runTick++;
 			rotationSpeed = (float)baseCraftTime / Math.max(crafter.animLength, 1);
 			if(rotationTick+3 >= rotStartTime && prevTick+3 < rotStartTime+3) {
-				crafter.getLevel().playLocalSound(corePos.x, corePos.y, corePos.z, DESounds.fusionComplete, SoundSource.BLOCKS, 2F, 0.5F, false);
+				crafter.getLevel().playLocalSound(corePos.x, corePos.y, corePos.z, DESounds.FUSION_COMPLETE.get(), SoundSource.BLOCKS, 2F, 0.5F, false);
 				if(sound == null) {
 					sound = new FusionCrafterRotationSound(crafter);
 					sound.setPitch(0.5F+(1.5F*(rotationSpeed-1)));
@@ -84,7 +84,7 @@ public class FusionCrafterFXHandler implements Runnable {
 			}
 			injectTime = Math.max(0, (rotationTick-beamStartTime)/(float)(baseCraftTime-beamStartTime));
 			if(injectTime > 0 && RenderTimer.INSTANCE.getTicks() % 5 == 0) {
-				crafter.getLevel().playLocalSound(corePos.x, corePos.y, corePos.z, DESounds.energyBolt, SoundSource.BLOCKS, 1F, 1F, false);
+				crafter.getLevel().playLocalSound(corePos.x, corePos.y, corePos.z, DESounds.ENERGY_BOLT.get(), SoundSource.BLOCKS, 1F, 1F, false);
 			}
 		}
 		long totalCharge = crafter.getInjectors().stream().mapToLong(IFusionInjector::getInjectorEnergy).sum();
@@ -100,7 +100,7 @@ public class FusionCrafterFXHandler implements Runnable {
 			}
 			coreDischarge = rand.nextInt(ingreds.size());
 			Vector3 pos = Vector3.fromTileCenter(crafter).add(ingreds.get(coreDischarge).pos);
-			crafter.getLevel().playLocalSound(pos.x, pos.y, pos.z, DESounds.energyBolt, SoundSource.BLOCKS, 2F, 1F, false);
+			crafter.getLevel().playLocalSound(pos.x, pos.y, pos.z, DESounds.ENERGY_BOLT.get(), SoundSource.BLOCKS, 2F, 1F, false);
 		}
 	}
 

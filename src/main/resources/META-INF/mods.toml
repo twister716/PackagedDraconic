@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[40,)"
+loaderVersion = "[46,)"
 license = "MIT"
 issueTrackerURL = "https://github.com/TheLMiffy1111/PackagedDraconic/issues"
 
@@ -14,15 +14,15 @@ issueTrackerURL = "https://github.com/TheLMiffy1111/PackagedDraconic/issues"
 
 [[dependencies.packageddraconic]]
 	modId = "forge"
-	versionRange = "[40,)"
+	versionRange = "[46,)"
 	mandatory = true
 
 [[dependencies.packageddraconic]]
 	modId = "packagedauto"
-	versionRange = "[3.1.7,)"
+	versionRange = "[3.4.3,)"
 	mandatory = true
 
 [[dependencies.packageddraconic]]
 	modId = "draconicevolution"
-	versionRange = "[3,)"
+	versionRange = "[3.1,)"
 	mandatory = true

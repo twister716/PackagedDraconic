@@ -1,6 +1,5 @@
 package thelm.packageddraconic.block;
 
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -16,24 +15,22 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import thelm.packagedauto.block.BaseBlock;
 import thelm.packagedauto.block.entity.BaseBlockEntity;
-import thelm.packageddraconic.PackagedDraconic;
 import thelm.packageddraconic.block.entity.FusionCrafterBlockEntity;
 
 public class FusionCrafterBlock extends BaseBlock {
 
 	public static final FusionCrafterBlock INSTANCE = new FusionCrafterBlock();
-	public static final Item ITEM_INSTANCE = new BlockItem(INSTANCE, new Item.Properties().tab(PackagedDraconic.ITEM_GROUP)).setRegistryName("packageddraconic:fusion_crafter");
+	public static final Item ITEM_INSTANCE = new BlockItem(INSTANCE, new Item.Properties());
 	public static final VoxelShape SHAPE = box(1, 1, 1, 15, 15, 15);
 
 	public FusionCrafterBlock() {
-		super(BlockBehaviour.Properties.of(Material.METAL).strength(15F, 25F).noOcclusion().sound(SoundType.METAL));
-		setRegistryName("packageddraconic:fusion_crafter");
+		super(BlockBehaviour.Properties.of().strength(15F, 25F).noOcclusion().mapColor(MapColor.METAL).sound(SoundType.METAL));
 	}
 
 	@Override
@@ -54,7 +51,7 @@ public class FusionCrafterBlock extends BaseBlock {
 				if(!level.isClientSide) {
 					Component message = crafter.getMessage();
 					if(message != null) {
-						player.sendMessage(message, Util.NIL_UUID);
+						player.sendSystemMessage(message);
 					}
 				}
 				return InteractionResult.SUCCESS;

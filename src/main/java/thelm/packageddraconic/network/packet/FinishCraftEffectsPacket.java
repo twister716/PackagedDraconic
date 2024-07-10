@@ -47,10 +47,10 @@ public class FinishCraftEffectsPacket {
 						double velX = (level.random.nextDouble()-0.5)*0.1;
 						double velY = (level.random.nextDouble()-0.5)*0.1;
 						double velZ = (level.random.nextDouble()-0.5)*0.1;
-						level.addParticle(new IntParticleType.IntParticleData(DEParticles.energy_basic, 0, 255, 255, 64), pkt.pos.getX()+0.5, pkt.pos.getY()+0.5, pkt.pos.getZ()+0.5, velX, velY, velZ);
+						level.addParticle(new IntParticleType.IntParticleData(DEParticles.ENERGY_BASIC.get(), 0, 255, 255, 64), pkt.pos.getX()+0.5, pkt.pos.getY()+0.5, pkt.pos.getZ()+0.5, velX, velY, velZ);
 					}
 				}
-				level.playLocalSound(pkt.pos.getX()+0.5, pkt.pos.getY()+0.5, pkt.pos.getZ()+0.5, DESounds.fusionComplete, SoundSource.BLOCKS, 4F, (1F+(level.random.nextFloat()-level.random.nextFloat())*0.2F)*0.7F, false);
+				level.playLocalSound(pkt.pos.getX()+0.5, pkt.pos.getY()+0.5, pkt.pos.getZ()+0.5, DESounds.FUSION_COMPLETE.get(), SoundSource.BLOCKS, 4F, (1F+(level.random.nextFloat()-level.random.nextFloat())*0.2F)*0.7F, false);
 			}
 		});
 		ctx.get().setPacketHandled(true);

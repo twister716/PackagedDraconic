@@ -1,14 +1,14 @@
 package thelm.packageddraconic.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
+import com.mojang.math.Axis;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -35,15 +35,16 @@ public class MarkedInjectorRenderer implements BlockEntityRenderer<MarkedInjecto
 			poseStack.scale(0.5F, 0.5F, 0.5F);
 			if(facing.getAxis() == Direction.Axis.Y) {
 				if(facing == Direction.DOWN) {
-					poseStack.mulPose(new Quaternion(180, 0, 0, true));
+					poseStack.mulPose(Axis.XP.rotationDegrees(180));
 				}
 			}
 			else {
-				poseStack.mulPose(new Quaternion(facing.getStepZ()*90, 0, facing.getStepX()*-90, true));
+				poseStack.mulPose(Axis.XP.rotationDegrees(facing.getStepZ()*90));
+				poseStack.mulPose(Axis.ZP.rotationDegrees(facing.getStepX()*-90));
 			}
-			poseStack.mulPose(new Quaternion(0, (RenderTimer.INSTANCE.getTicks()+partialTicks)*-0.8F, 0, true));
+			poseStack.mulPose(Axis.YP.rotationDegrees((RenderTimer.INSTANCE.getTicks()+partialTicks)*-0.8F));
 			ItemStack stack = blockEntity.getItemHandler().getStackInSlot(0);
-			Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, poseStack, buffer, (int)blockEntity.getBlockPos().asLong());
+			Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, blockEntity.getLevel(), (int)blockEntity.getBlockPos().asLong());
 		}
 	}
 }

@@ -77,11 +77,6 @@ public class AEFusionCrafterBlockEntity extends FusionCrafterBlockEntity impleme
 	}
 
 	@Override
-	public void onSecurityBreak(AEFusionCrafterBlockEntity nodeOwner, IGridNode node) {
-		level.destroyBlock(worldPosition, true);
-	}
-
-	@Override
 	public void onSaveChanges(AEFusionCrafterBlockEntity nodeOwner, IGridNode node) {
 		setChanged();
 	}
@@ -135,6 +130,7 @@ public class AEFusionCrafterBlockEntity extends FusionCrafterBlockEntity impleme
 		}
 	}
 
+	@SuppressWarnings("removal")
 	protected void chargeMEEnergy() {
 		if(getMainNode().isActive()) {
 			IGrid grid = getMainNode().getGrid();

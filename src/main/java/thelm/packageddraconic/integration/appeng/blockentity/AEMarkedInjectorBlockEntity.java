@@ -71,11 +71,6 @@ public class AEMarkedInjectorBlockEntity extends MarkedInjectorBlockEntity imple
 	}
 
 	@Override
-	public void onSecurityBreak(AEMarkedInjectorBlockEntity nodeOwner, IGridNode node) {
-		level.destroyBlock(worldPosition, true);
-	}
-
-	@Override
 	public void onSaveChanges(AEMarkedInjectorBlockEntity nodeOwner, IGridNode node) {
 		setChanged();
 	}

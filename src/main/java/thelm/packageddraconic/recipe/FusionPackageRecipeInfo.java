@@ -59,7 +59,7 @@ public class FusionPackageRecipeInfo implements IFusionPackageRecipeInfo {
 			FakeFusionInventory matrix = new FakeFusionInventory();
 			matrix.setCatalystStack(inputCore);
 			matrix.setInjectorStacks(inputInjector);
-			output = this.recipe.assemble(matrix).copy();
+			output = this.recipe.assemble(matrix, MiscHelper.INSTANCE.getRegistryAccess()).copy();
 			for(int i = 0; i*9 < input.size(); ++i) {
 				patterns.add(new PackagePattern(this, i));
 			}
@@ -155,7 +155,7 @@ public class FusionPackageRecipeInfo implements IFusionPackageRecipeInfo {
 		FakeFusionInventory matrix = new FakeFusionInventory();
 		matrix.setCatalystStack(inputCore);
 		matrix.setInjectorStacks(inputInjector);
-		IFusionRecipe recipe = MiscHelper.INSTANCE.getRecipeManager().getRecipeFor(DraconicAPI.FUSION_RECIPE_TYPE, matrix, level).orElse(null);
+		IFusionRecipe recipe = MiscHelper.INSTANCE.getRecipeManager().getRecipeFor(DraconicAPI.FUSION_RECIPE_TYPE.get(), matrix, level).orElse(null);
 		if(recipe != null) {
 			this.recipe = recipe;
 			if(recipe.getCatalyst() instanceof IngredientStack ingStack) {
@@ -168,7 +168,7 @@ public class FusionPackageRecipeInfo implements IFusionPackageRecipeInfo {
 			List<ItemStack> toCondense = new ArrayList<>(inputInjector);
 			toCondense.add(inputCore);
 			this.input.addAll(MiscHelper.INSTANCE.condenseStacks(toCondense));
-			this.output = recipe.assemble(matrix).copy();
+			this.output = recipe.assemble(matrix, MiscHelper.INSTANCE.getRegistryAccess()).copy();
 			for(int i = 0; i*9 < this.input.size(); ++i) {
 				patterns.add(new PackagePattern(this, i));
 			}

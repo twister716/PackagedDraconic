@@ -12,9 +12,7 @@ import thelm.packageddraconic.slot.FusionCrafterRemoveOnlySlot;
 
 public class FusionCrafterMenu extends BaseMenu<FusionCrafterBlockEntity> {
 
-	public static final MenuType<FusionCrafterMenu> TYPE_INSTANCE = (MenuType<FusionCrafterMenu>)IForgeMenuType.
-			create(new PositionalBlockEntityMenuFactory<>(FusionCrafterMenu::new)).
-			setRegistryName("packageddraconic:fusion_crafter");
+	public static final MenuType<FusionCrafterMenu> TYPE_INSTANCE = IForgeMenuType.create(new PositionalBlockEntityMenuFactory<>(FusionCrafterMenu::new));
 
 	public FusionCrafterMenu(int windowId, Inventory inventory, FusionCrafterBlockEntity blockEntity) {
 		super(TYPE_INSTANCE, windowId, inventory, blockEntity);

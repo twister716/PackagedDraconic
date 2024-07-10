@@ -1,10 +1,10 @@
 {
 	"parent": "block/block",
 	"textures": {
-		"particle": "packageddraconic:blocks/marked_injector_base",
-		"base": "packageddraconic:blocks/marked_injector_base",
+		"particle": "packageddraconic:block/marked_injector_base",
+		"base": "packageddraconic:block/marked_injector_base",
 		"core": "#core",
-		"ring": "packageddraconic:blocks/marked_injector_ring"
+		"ring": "packageddraconic:block/marked_injector_ring"
 	},
 	"elements": [
 		{

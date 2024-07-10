@@ -19,25 +19,24 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import thelm.packagedauto.block.BaseBlock;
 import thelm.packagedauto.block.entity.BaseBlockEntity;
-import thelm.packageddraconic.PackagedDraconic;
 import thelm.packageddraconic.block.entity.MarkedInjectorBlockEntity;
 
 public class MarkedInjectorBlock extends BaseBlock {
 
-	public static final MarkedInjectorBlock BASIC = new MarkedInjectorBlock(0, "packageddraconic:marked_draconium_injector");
-	public static final MarkedInjectorBlock WYVERN = new MarkedInjectorBlock(1, "packageddraconic:marked_wyvern_injector");
-	public static final MarkedInjectorBlock DRACONIC = new MarkedInjectorBlock(2, "packageddraconic:marked_draconic_injector");
-	public static final MarkedInjectorBlock CHAOTIC = new MarkedInjectorBlock(3, "packageddraconic:marked_chaotic_injector");
-	public static final Item BASIC_ITEM = new BlockItem(BASIC, new Item.Properties().tab(PackagedDraconic.ITEM_GROUP)).setRegistryName("packageddraconic:marked_draconium_injector");
-	public static final Item WYVERN_ITEM = new BlockItem(WYVERN, new Item.Properties().tab(PackagedDraconic.ITEM_GROUP)).setRegistryName("packageddraconic:marked_wyvern_injector");
-	public static final Item DRACONIC_ITEM = new BlockItem(DRACONIC, new Item.Properties().tab(PackagedDraconic.ITEM_GROUP)).setRegistryName("packageddraconic:marked_draconic_injector");
-	public static final Item CHAOTIC_ITEM = new BlockItem(CHAOTIC, new Item.Properties().tab(PackagedDraconic.ITEM_GROUP)).setRegistryName("packageddraconic:marked_chaotic_injector");
+	public static final MarkedInjectorBlock BASIC = new MarkedInjectorBlock(0);
+	public static final MarkedInjectorBlock WYVERN = new MarkedInjectorBlock(1);
+	public static final MarkedInjectorBlock DRACONIC = new MarkedInjectorBlock(2);
+	public static final MarkedInjectorBlock CHAOTIC = new MarkedInjectorBlock(3);
+	public static final Item BASIC_ITEM = new BlockItem(BASIC, new Item.Properties());
+	public static final Item WYVERN_ITEM = new BlockItem(WYVERN, new Item.Properties());
+	public static final Item DRACONIC_ITEM = new BlockItem(DRACONIC, new Item.Properties());
+	public static final Item CHAOTIC_ITEM = new BlockItem(CHAOTIC, new Item.Properties());
 	public static final VoxelShape SHAPE_DOWN = box(1, 6, 1, 15, 16, 15);
 	public static final VoxelShape SHAPE_UP = box(1, 0, 1, 15, 10, 15);
 	public static final VoxelShape SHAPE_NORTH = box(1, 1, 6, 15, 15, 16);
@@ -47,10 +46,9 @@ public class MarkedInjectorBlock extends BaseBlock {
 
 	public final int tier;
 
-	public MarkedInjectorBlock(int tier, String name) {
-		super(BlockBehaviour.Properties.of(Material.METAL).strength(15F, 25F).noOcclusion().sound(SoundType.METAL));
+	public MarkedInjectorBlock(int tier) {
+		super(BlockBehaviour.Properties.of().strength(15F, 25F).noOcclusion().mapColor(MapColor.METAL).sound(SoundType.METAL));
 		registerDefaultState(stateDefinition.any().setValue(DirectionalBlock.FACING, Direction.UP));
-		setRegistryName(name);
 		this.tier = tier;
 	}
 

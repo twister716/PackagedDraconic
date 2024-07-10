@@ -13,7 +13,7 @@ public class FusionCrafterRotationSound extends SimpleSoundInstance implements T
 	private FusionCrafterBlockEntity blockEntity;
 
 	public FusionCrafterRotationSound(FusionCrafterBlockEntity blockEntity) {
-		super(DESounds.fusionRotation, SoundSource.BLOCKS, 1.5F, 1, blockEntity.getBlockPos());
+		super(DESounds.FUSION_ROTATION.get(), SoundSource.BLOCKS, 1.5F, 1, blockEntity.getLevel().random, blockEntity.getBlockPos());
 		this.blockEntity = blockEntity;
 		looping = true;
 	}

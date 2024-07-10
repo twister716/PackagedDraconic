@@ -19,8 +19,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.ModList;
 import thelm.packagedauto.block.entity.BaseBlockEntity;
 import thelm.packagedauto.util.MiscHelper;
@@ -31,12 +31,12 @@ import thelm.packageddraconic.op.MarkedInjectorOPStorage;
 
 public class MarkedInjectorBlockEntity extends BaseBlockEntity implements IFusionInjector {
 
-	public static final BlockEntityType<MarkedInjectorBlockEntity> TYPE_INSTANCE = (BlockEntityType<MarkedInjectorBlockEntity>)BlockEntityType.Builder.
+	public static final BlockEntityType<MarkedInjectorBlockEntity> TYPE_INSTANCE = BlockEntityType.Builder.
 			of(MiscHelper.INSTANCE.<BlockEntityType.BlockEntitySupplier<MarkedInjectorBlockEntity>>conditionalSupplier(
 					()->ModList.get().isLoaded("ae2"),
 					()->()->AEMarkedInjectorBlockEntity::new, ()->()->MarkedInjectorBlockEntity::new).get(),
 					MarkedInjectorBlock.BASIC, MarkedInjectorBlock.WYVERN, MarkedInjectorBlock.DRACONIC, MarkedInjectorBlock.CHAOTIC).
-			build(null).setRegistryName("packageddraconic:marked_injector");
+			build(null);
 
 	public MarkedInjectorOPStorage opStorage = new MarkedInjectorOPStorage(this);
 	public BlockPos crafterPos = null;
@@ -187,7 +187,7 @@ public class MarkedInjectorBlockEntity extends BaseBlockEntity implements IFusio
 
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction direction) {
-		if(getDirection() != direction && (capability == CapabilityEnergy.ENERGY || capability == CapabilityOP.OP)) {
+		if(getDirection() != direction && (capability == ForgeCapabilities.ENERGY || capability == CapabilityOP.OP)) {
 			return LazyOptional.of(()->(T)opStorage);
 		}
 		return super.getCapability(capability, direction);
