@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-6453f0f4"
+	id "com.crystaelix.loom" version "jitpack-ae847f1f"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -121,7 +121,7 @@ dependencies {
 	modImplementation "codechicken:CodeChickenLib:1.18.2-4.1.4.488:universal"
 	modImplementation "com.brandon3055.brandonscore:BrandonsCore:1.18.2-3.1.10.283:universal"
 	modImplementation "com.brandon3055.draconicevolution:Draconic-Evolution:1.18.2-3.0.31.531:universal"
-	modImplementation("mezz.jei:jei-1.18.2-forge:10.2.1.1006") {transitive = false}
+	modImplementation("mezz.jei:jei-1.18.2-forge:10.2.1.1008") {transitive = false}
 	modImplementation "appeng:appliedenergistics2-forge:11.7.6"
 	modImplementation "vazkii.patchouli:Patchouli:1.18.2-71.1"
 
