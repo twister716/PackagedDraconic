@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-39f2e017"
+	id "com.crystaelix.loom" version "jitpack-6453f0f4"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -116,7 +116,7 @@ dependencies {
 	legacyForge "net.minecraftforge:forge:1.12.2-14.23.5.2860"
 
 	// Dependencies
-	modImplementation "curse.maven:packagedauto-308380:5505100"
+	modImplementation "curse.maven:packagedauto-308380:5521117"
 	modImplementation "codechicken:CodeChickenLib:1.12.2-3.2.3.358:universal"
 	modImplementation "curse.maven:redstone-flux-270789:2920436"
 	modImplementation "com.brandon3055.brandonscore:BrandonsCore:1.12.2-2.4.20.162:universal"
