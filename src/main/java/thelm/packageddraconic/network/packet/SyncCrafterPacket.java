@@ -15,52 +15,34 @@ import net.minecraftforge.network.PacketDistributor.TargetPoint;
 import thelm.packageddraconic.block.entity.FusionCrafterBlockEntity;
 import thelm.packageddraconic.network.PacketHandler;
 
-public class SyncCrafterPacket {
-
-	private BlockPos pos;
-	private IFusionStateMachine.FusionState fusionState;
-	private short progress;
-	private float animProgress;
-	private short animLength;
+public record SyncCrafterPacket(BlockPos pos, IFusionStateMachine.FusionState fusionState, short progress, float animProgress, short animLength) {
 
 	public SyncCrafterPacket(FusionCrafterBlockEntity crafter) {
-		pos = crafter.getBlockPos();
-		fusionState = crafter.fusionState;
-		progress = crafter.progress;
-		animProgress = crafter.animProgress;
-		animLength = crafter.animLength;
+		this(crafter.getBlockPos(), crafter.fusionState, crafter.progress, crafter.animProgress, crafter.animLength);
 	}
 
-	private SyncCrafterPacket(BlockPos pos, byte fusionState, short progress, float animProgress, short animLength) {
-		this.pos = pos;
-		this.fusionState = IFusionStateMachine.FusionState.values()[fusionState];
-		this.progress = progress;
-		this.animProgress = animProgress;
-		this.animLength = animLength;
-	}
-
-	public static void encode(SyncCrafterPacket pkt, FriendlyByteBuf buf) {
-		buf.writeBlockPos(pkt.pos);
-		buf.writeByte(pkt.fusionState.ordinal());
-		buf.writeShort(pkt.progress);
-		buf.writeFloat(pkt.animProgress);
-		buf.writeShort(pkt.animLength);
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeBlockPos(pos);
+		buf.writeByte(fusionState.ordinal());
+		buf.writeShort(progress);
+		buf.writeFloat(animProgress);
+		buf.writeShort(animLength);
 	}
 
 	public static SyncCrafterPacket decode(FriendlyByteBuf buf) {
-		return new SyncCrafterPacket(buf.readBlockPos(), buf.readByte(), buf.readShort(), buf.readFloat(), buf.readShort());
+		return new SyncCrafterPacket(buf.readBlockPos(), IFusionStateMachine.FusionState.values()[buf.readByte()], buf.readShort(), buf.readFloat(), buf.readShort());
 	}
 
-	public static void handle(SyncCrafterPacket pkt, Supplier<NetworkEvent.Context> ctx) {
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(()->{
 			ClientLevel level = Minecraft.getInstance().level;
-			if(level.isLoaded(pkt.pos)) {
-				BlockEntity be = level.getBlockEntity(pkt.pos);
+			if(level.isLoaded(pos)) {
+				BlockEntity be = level.getBlockEntity(pos);
 				if(be instanceof FusionCrafterBlockEntity crafter) {
-					crafter.fusionState = pkt.fusionState;
-					crafter.progress = pkt.progress;
-					crafter.animProgress = pkt.animProgress;
-					crafter.animLength = pkt.animLength;
+					crafter.fusionState = fusionState;
+					crafter.progress = progress;
+					crafter.animProgress = animProgress;
+					crafter.animLength = animLength;
 				}
 			}
 		});

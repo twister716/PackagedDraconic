@@ -18,39 +18,31 @@ import net.minecraftforge.network.PacketDistributor.TargetPoint;
 import thelm.packageddraconic.block.entity.FusionCrafterBlockEntity;
 import thelm.packageddraconic.network.PacketHandler;
 
-public class FinishCraftEffectsPacket {
+public record FinishCraftEffectsPacket(BlockPos pos, boolean doParticles) {
 
-	private BlockPos pos;
-	private boolean doParticles;
-
-	public FinishCraftEffectsPacket(BlockPos pos, boolean doParticles) {
-		this.pos = pos;
-		this.doParticles = doParticles;
-	}
-
-	public static void encode(FinishCraftEffectsPacket pkt, FriendlyByteBuf buf) {
-		buf.writeBlockPos(pkt.pos);
-		buf.writeBoolean(pkt.doParticles);
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeBlockPos(pos);
+		buf.writeBoolean(doParticles);
 	}
 
 	public static FinishCraftEffectsPacket decode(FriendlyByteBuf buf) {
 		return new FinishCraftEffectsPacket(buf.readBlockPos(), buf.readBoolean());
 	}
 
-	public static void handle(FinishCraftEffectsPacket pkt, Supplier<NetworkEvent.Context> ctx) {
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(()->{
 			ClientLevel level = Minecraft.getInstance().level;
-			if(level.isLoaded(pkt.pos)) {
-				if(pkt.doParticles) {
-					level.addParticle(ParticleTypes.EXPLOSION, pkt.pos.getX()+0.5, pkt.pos.getY()+0.5, pkt.pos.getZ()+0.5, 1, 0, 0);
+			if(level.isLoaded(pos)) {
+				if(doParticles) {
+					level.addParticle(ParticleTypes.EXPLOSION, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, 1, 0, 0);
 					for(int i = 0; i < 100; i++) {
 						double velX = (level.random.nextDouble()-0.5)*0.1;
 						double velY = (level.random.nextDouble()-0.5)*0.1;
 						double velZ = (level.random.nextDouble()-0.5)*0.1;
-						level.addParticle(new IntParticleType.IntParticleData(DEParticles.ENERGY_BASIC.get(), 0, 255, 255, 64), pkt.pos.getX()+0.5, pkt.pos.getY()+0.5, pkt.pos.getZ()+0.5, velX, velY, velZ);
+						level.addParticle(new IntParticleType.IntParticleData(DEParticles.ENERGY_BASIC.get(), 0, 255, 255, 64), pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, velX, velY, velZ);
 					}
 				}
-				level.playLocalSound(pkt.pos.getX()+0.5, pkt.pos.getY()+0.5, pkt.pos.getZ()+0.5, DESounds.FUSION_COMPLETE.get(), SoundSource.BLOCKS, 4F, (1F+(level.random.nextFloat()-level.random.nextFloat())*0.2F)*0.7F, false);
+				level.playLocalSound(pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, DESounds.FUSION_COMPLETE.get(), SoundSource.BLOCKS, 4F, (1F+(level.random.nextFloat()-level.random.nextFloat())*0.2F)*0.7F, false);
 			}
 		});
 		ctx.get().setPacketHandled(true);
