@@ -24,6 +24,7 @@ public interface IFusionPackageRecipeInfo extends IPackageRecipeInfo {
 
 	@Override
 	default List<ItemStack> getOutputs() {
-		return Collections.singletonList(getOutput());
+		ItemStack output = getOutput();
+		return output.isEmpty() ? Collections.emptyList() : Collections.singletonList(output);
 	}
 }

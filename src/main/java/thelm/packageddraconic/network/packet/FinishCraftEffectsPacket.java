@@ -28,29 +28,29 @@ public class FinishCraftEffectsPacket {
 		this.doParticles = doParticles;
 	}
 
-	public static void encode(FinishCraftEffectsPacket pkt, PacketBuffer buf) {
-		buf.writeBlockPos(pkt.pos);
-		buf.writeBoolean(pkt.doParticles);
+	public void encode(PacketBuffer buf) {
+		buf.writeBlockPos(pos);
+		buf.writeBoolean(doParticles);
 	}
 
 	public static FinishCraftEffectsPacket decode(PacketBuffer buf) {
 		return new FinishCraftEffectsPacket(buf.readBlockPos(), buf.readBoolean());
 	}
 
-	public static void handle(FinishCraftEffectsPacket pkt, Supplier<NetworkEvent.Context> ctx) {
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(()->{
 			ClientWorld world = Minecraft.getInstance().level;
-			if(world.isLoaded(pkt.pos)) {
-				if(pkt.doParticles) {
-					world.addParticle(ParticleTypes.EXPLOSION, pkt.pos.getX()+0.5, pkt.pos.getY()+0.5, pkt.pos.getZ()+0.5, 1, 0, 0);
+			if(world.isLoaded(pos)) {
+				if(doParticles) {
+					world.addParticle(ParticleTypes.EXPLOSION, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, 1, 0, 0);
 					for(int i = 0; i < 100; i++) {
 						double velX = (world.random.nextDouble()-0.5)*0.1;
 						double velY = (world.random.nextDouble()-0.5)*0.1;
 						double velZ = (world.random.nextDouble()-0.5)*0.1;
-						world.addParticle(new IntParticleType.IntParticleData(DEParticles.energy_basic, 0, 255, 255, 64), pkt.pos.getX()+0.5, pkt.pos.getY()+0.5, pkt.pos.getZ()+0.5, velX, velY, velZ);
+						world.addParticle(new IntParticleType.IntParticleData(DEParticles.energy_basic, 0, 255, 255, 64), pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, velX, velY, velZ);
 					}
 				}
-				world.playLocalSound(pkt.pos.getX()+0.5, pkt.pos.getY()+0.5, pkt.pos.getZ()+0.5, DESounds.fusionComplete, SoundCategory.BLOCKS, 4F, (1F+(world.random.nextFloat()-world.random.nextFloat())*0.2F)*0.7F, false);
+				world.playLocalSound(pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, DESounds.fusionComplete, SoundCategory.BLOCKS, 4F, (1F+(world.random.nextFloat()-world.random.nextFloat())*0.2F)*0.7F, false);
 			}
 		});
 		ctx.get().setPacketHandled(true);

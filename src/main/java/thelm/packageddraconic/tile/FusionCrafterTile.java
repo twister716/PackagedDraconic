@@ -160,7 +160,7 @@ public class FusionCrafterTile extends BaseTile implements ITickableTileEntity, 
 
 	@Override
 	public boolean acceptPackage(IPackageRecipeInfo recipeInfo, List<ItemStack> stacks, Direction direction) {
-		if(!isBusy() && recipeInfo instanceof IFusionPackageRecipeInfo) {
+		if(!isBusy() && recipeInfo.isValid() && recipeInfo instanceof IFusionPackageRecipeInfo) {
 			IFusionPackageRecipeInfo recipe = (IFusionPackageRecipeInfo)recipeInfo;
 			int tier = recipe.getTierRequired();
 			List<ItemStack> injectorInputs = recipe.getInjectorInputs();

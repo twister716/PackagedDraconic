@@ -39,29 +39,29 @@ public class SyncCrafterPacket {
 		this.animLength = animLength;
 	}
 
-	public static void encode(SyncCrafterPacket pkt, PacketBuffer buf) {
-		buf.writeBlockPos(pkt.pos);
-		buf.writeByte(pkt.fusionState.ordinal());
-		buf.writeShort(pkt.progress);
-		buf.writeFloat(pkt.animProgress);
-		buf.writeShort(pkt.animLength);
+	public void encode(PacketBuffer buf) {
+		buf.writeBlockPos(pos);
+		buf.writeByte(fusionState.ordinal());
+		buf.writeShort(progress);
+		buf.writeFloat(animProgress);
+		buf.writeShort(animLength);
 	}
 
 	public static SyncCrafterPacket decode(PacketBuffer buf) {
 		return new SyncCrafterPacket(buf.readBlockPos(), buf.readByte(), buf.readShort(), buf.readFloat(), buf.readShort());
 	}
 
-	public static void handle(SyncCrafterPacket pkt, Supplier<NetworkEvent.Context> ctx) {
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(()->{
 			ClientWorld world = Minecraft.getInstance().level;
-			if(world.isLoaded(pkt.pos)) {
-				TileEntity te = world.getBlockEntity(pkt.pos);
+			if(world.isLoaded(pos)) {
+				TileEntity te = world.getBlockEntity(pos);
 				if(te instanceof FusionCrafterTile) {
 					FusionCrafterTile tile = (FusionCrafterTile)te;
-					tile.fusionState = pkt.fusionState;
-					tile.progress = pkt.progress;
-					tile.animProgress = pkt.animProgress;
-					tile.animLength = pkt.animLength;
+					tile.fusionState = fusionState;
+					tile.progress = progress;
+					tile.animProgress = animProgress;
+					tile.animLength = animLength;
 				}
 			}
 		});

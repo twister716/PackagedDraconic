@@ -31,25 +31,25 @@ public class SyncInjectorPacket {
 		this.req = req;
 	}
 
-	public static void encode(SyncInjectorPacket pkt, PacketBuffer buf) {
-		buf.writeBlockPos(pkt.pos);
-		buf.writeLong(pkt.op);
-		buf.writeLong(pkt.req);
+	public void encode(PacketBuffer buf) {
+		buf.writeBlockPos(pos);
+		buf.writeLong(op);
+		buf.writeLong(req);
 	}
 
 	public static SyncInjectorPacket decode(PacketBuffer buf) {
 		return new SyncInjectorPacket(buf.readBlockPos(), buf.readLong(), buf.readLong());
 	}
 
-	public static void handle(SyncInjectorPacket pkt, Supplier<NetworkEvent.Context> ctx) {
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(()->{
 			ClientWorld world = Minecraft.getInstance().level;
-			if(world.isLoaded(pkt.pos)) {
-				TileEntity te = world.getBlockEntity(pkt.pos);
+			if(world.isLoaded(pos)) {
+				TileEntity te = world.getBlockEntity(pos);
 				if(te instanceof MarkedInjectorTile) {
 					MarkedInjectorTile tile = (MarkedInjectorTile)te;
-					tile.setInjectorEnergy(pkt.op);
-					tile.setEnergyRequirement(pkt.req, 0);
+					tile.setInjectorEnergy(op);
+					tile.setEnergyRequirement(req, 0);
 				}
 			}
 		});
