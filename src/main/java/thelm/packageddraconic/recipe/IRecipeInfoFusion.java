@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 import thelm.packagedauto.api.IRecipeInfo;
 
 public interface IRecipeInfoFusion extends IRecipeInfo {
-	
+
 	ItemStack getCoreInput();
 
 	List<ItemStack> getInjectorInputs();
@@ -24,6 +24,7 @@ public interface IRecipeInfoFusion extends IRecipeInfo {
 
 	@Override
 	default List<ItemStack> getOutputs() {
-		return Collections.singletonList(getOutput());
+		ItemStack output = getOutput();
+		return output.isEmpty() ? Collections.emptyList() : Collections.singletonList(output);
 	}
 }

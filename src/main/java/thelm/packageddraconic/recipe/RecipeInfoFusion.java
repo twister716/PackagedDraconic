@@ -43,29 +43,26 @@ public class RecipeInfoFusion implements IRecipeInfoFusion {
 		inputCore = new ItemStack(nbt.getCompoundTag("InputCore"));
 		MiscUtil.loadAllItems(nbt.getTagList("InputInjector", 10), inputInjector);
 		patterns.clear();
-		if(inputInjector.isEmpty()) {
-			return;
-		}
-		for(IFusionRecipe recipe : RecipeManager.FUSION_REGISTRY.getRecipes()) {
-			if(recipe.isRecipeCatalyst(inputCore) && recipe.getRecipeIngredients().size() == inputInjector.size()) {
-				List<Ingredient> matchers = Lists.transform(recipe.getRecipeIngredients(), RecipeInfoFusion::getIngredient);
-				if(RecipeMatcher.findMatches(inputInjector, matchers) != null) {
-					this.recipe = recipe;
-					if(!recipe.getRecipeCatalyst().isEmpty()) {
-						inputCore.setCount(recipe.getRecipeCatalyst().getCount());
+		if(!inputInjector.isEmpty()) {
+			for(IFusionRecipe recipe : RecipeManager.FUSION_REGISTRY.getRecipes()) {
+				if(recipe.isRecipeCatalyst(inputCore) && recipe.getRecipeIngredients().size() == inputInjector.size()) {
+					List<Ingredient> matchers = Lists.transform(recipe.getRecipeIngredients(), RecipeInfoFusion::getIngredient);
+					if(RecipeMatcher.findMatches(inputInjector, matchers) != null) {
+						this.recipe = recipe;
+						if(!recipe.getRecipeCatalyst().isEmpty()) {
+							inputCore.setCount(recipe.getRecipeCatalyst().getCount());
+						}
+						output = this.recipe.getRecipeOutput(inputCore);
+						break;
 					}
-					break;
 				}
 			}
 		}
-		if(recipe != null) {
-			List<ItemStack> toCondense = new ArrayList<>(inputInjector);
-			toCondense.add(inputCore);
-			input.addAll(MiscUtil.condenseStacks(toCondense));
-			output = recipe.getRecipeOutput(inputCore);
-			for(int i = 0; i*9 < input.size(); ++i) {
-				patterns.add(new PatternHelper(this, i));
-			}
+		List<ItemStack> toCondense = new ArrayList<>(inputInjector);
+		toCondense.add(inputCore);
+		input.addAll(MiscUtil.condenseStacks(toCondense));
+		for(int i = 0; i*9 < input.size(); ++i) {
+			patterns.add(new PatternHelper(this, i));
 		}
 	}
 

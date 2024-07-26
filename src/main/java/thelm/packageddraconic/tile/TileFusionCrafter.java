@@ -289,7 +289,7 @@ public class TileFusionCrafter extends TileBase implements ITickable, IPackageCr
 
 	@Override
 	public boolean acceptPackage(IRecipeInfo recipeInfo, List<ItemStack> stacks, EnumFacing facing) {
-		if(!isBusy() && recipeInfo instanceof IRecipeInfoFusion) {
+		if(!isBusy() && recipeInfo.isValid() && recipeInfo instanceof IRecipeInfoFusion) {
 			IRecipeInfoFusion recipe = (IRecipeInfoFusion)recipeInfo;
 			int tier = recipe.getTierRequired();
 			List<ItemStack> injectorInputs = recipe.getInjectorInputs();
