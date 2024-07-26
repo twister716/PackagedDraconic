@@ -45,7 +45,7 @@ public class FakeFusionInventory implements IFusionInventory {
 
 	@Override
 	public List<IFusionInjector> getInjectors() {
-		return injectorStacks.stream().map(FakeFusionInjector::new).collect(Collectors.toList());
+		return injectorStacks.stream().<IFusionInjector>map(FakeFusionInjector::new).toList();
 	}
 
 	@Override

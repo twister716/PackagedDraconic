@@ -13,42 +13,30 @@ import net.minecraftforge.network.PacketDistributor.TargetPoint;
 import thelm.packageddraconic.block.entity.MarkedInjectorBlockEntity;
 import thelm.packageddraconic.network.PacketHandler;
 
-public class SyncInjectorPacket {
-
-	private BlockPos pos;
-	private long op;
-	private long req;
+public record SyncInjectorPacket(BlockPos pos, long op, long req) {
 
 	public SyncInjectorPacket(MarkedInjectorBlockEntity injector) {
-		pos = injector.getBlockPos();
-		op = injector.getInjectorEnergy();
-		req = injector.getEnergyRequirement();
+		this(injector.getBlockPos(), injector.getInjectorEnergy(), injector.getEnergyRequirement());
 	}
 
-	private SyncInjectorPacket(BlockPos pos, long op, long req) {
-		this.pos = pos;
-		this.op = op;
-		this.req = req;
-	}
-
-	public static void encode(SyncInjectorPacket pkt, FriendlyByteBuf buf) {
-		buf.writeBlockPos(pkt.pos);
-		buf.writeLong(pkt.op);
-		buf.writeLong(pkt.req);
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeBlockPos(pos);
+		buf.writeLong(op);
+		buf.writeLong(req);
 	}
 
 	public static SyncInjectorPacket decode(FriendlyByteBuf buf) {
 		return new SyncInjectorPacket(buf.readBlockPos(), buf.readLong(), buf.readLong());
 	}
 
-	public static void handle(SyncInjectorPacket pkt, Supplier<NetworkEvent.Context> ctx) {
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(()->{
 			ClientLevel level = Minecraft.getInstance().level;
-			if(level.isLoaded(pkt.pos)) {
-				BlockEntity be = level.getBlockEntity(pkt.pos);
+			if(level.isLoaded(pos)) {
+				BlockEntity be = level.getBlockEntity(pos);
 				if(be instanceof MarkedInjectorBlockEntity injector) {
-					injector.setInjectorEnergy(pkt.op);
-					injector.setEnergyRequirement(pkt.req, 0);
+					injector.setInjectorEnergy(op);
+					injector.setEnergyRequirement(req, 0);
 				}
 			}
 		});

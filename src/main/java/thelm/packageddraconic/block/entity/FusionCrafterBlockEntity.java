@@ -161,7 +161,7 @@ public class FusionCrafterBlockEntity extends BaseBlockEntity implements IPackag
 
 	@Override
 	public boolean acceptPackage(IPackageRecipeInfo recipeInfo, List<ItemStack> stacks, Direction direction) {
-		if(!isBusy() && recipeInfo instanceof IFusionPackageRecipeInfo recipe) {
+		if(!isBusy() && recipeInfo.isValid() && recipeInfo instanceof IFusionPackageRecipeInfo recipe) {
 			int tier = recipe.getTierRequired();
 			List<ItemStack> injectorInputs = recipe.getInjectorInputs();
 			List<BlockPos> emptyInjectors = getEmptyInjectors(tier);
@@ -278,7 +278,7 @@ public class FusionCrafterBlockEntity extends BaseBlockEntity implements IPackag
 	public List<IFusionInjector> getInjectors() {
 		return injectors.stream().map(level::getBlockEntity).
 				filter(be->be instanceof MarkedInjectorBlockEntity && !be.isRemoved()).
-				map(be->(IFusionInjector)be).collect(Collectors.toList());
+				map(be->(IFusionInjector)be).toList();
 	}
 
 	public static int distanceInDirection(BlockPos fromPos, BlockPos toPos, Direction direction) {

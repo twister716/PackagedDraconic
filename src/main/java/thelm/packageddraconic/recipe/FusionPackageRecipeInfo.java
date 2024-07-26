@@ -30,7 +30,7 @@ public class FusionPackageRecipeInfo implements IFusionPackageRecipeInfo {
 	ItemStack inputCore = ItemStack.EMPTY;
 	List<ItemStack> inputInjector = new ArrayList<>();
 	List<ItemStack> input = new ArrayList<>();
-	ItemStack output;
+	ItemStack output = ItemStack.EMPTY;
 	List<IPackagePattern> patterns = new ArrayList<>();
 
 	@Override
@@ -42,9 +42,6 @@ public class FusionPackageRecipeInfo implements IFusionPackageRecipeInfo {
 		MiscHelper.INSTANCE.loadAllItems(nbt.getList("InputInjector", 10), inputInjector);
 		patterns.clear();
 		Recipe<?> recipe = MiscHelper.INSTANCE.getRecipeManager().byKey(new ResourceLocation(nbt.getString("Recipe"))).orElse(null);
-		if(inputInjector.isEmpty()) {
-			return;
-		}
 		if(recipe instanceof IFusionRecipe fusionRecipe) {
 			this.recipe = fusionRecipe;
 			if(this.recipe.getCatalyst() instanceof IngredientStack ingStack) {
@@ -53,16 +50,16 @@ public class FusionPackageRecipeInfo implements IFusionPackageRecipeInfo {
 			else {
 				inputCore.setCount(1);
 			}
-			List<ItemStack> toCondense = new ArrayList<>(inputInjector);
-			toCondense.add(inputCore);
-			input.addAll(MiscHelper.INSTANCE.condenseStacks(toCondense));
 			FakeFusionInventory matrix = new FakeFusionInventory();
 			matrix.setCatalystStack(inputCore);
 			matrix.setInjectorStacks(inputInjector);
 			output = this.recipe.assemble(matrix).copy();
-			for(int i = 0; i*9 < input.size(); ++i) {
-				patterns.add(new PackagePattern(this, i));
-			}
+		}
+		List<ItemStack> toCondense = new ArrayList<>(inputInjector);
+		toCondense.add(inputCore);
+		input.addAll(MiscHelper.INSTANCE.condenseStacks(toCondense));
+		for(int i = 0; i*9 < input.size(); ++i) {
+			patterns.add(new PackagePattern(this, i));
 		}
 	}
 
