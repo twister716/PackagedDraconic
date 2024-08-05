@@ -128,7 +128,7 @@ public class MarkedInjectorTile extends BaseTile implements ITickableTileEntity,
 	@Override
 	public void setEnergyRequirement(long maxEnergy, long chargeRate) {
 		opStorage.energyReq = maxEnergy;
-		opStorage.chargeRate = chargeRate;
+		opStorage.chargeRate = Math.max(chargeRate, 1);
 		setChanged();
 	}
 
