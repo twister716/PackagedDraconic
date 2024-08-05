@@ -85,7 +85,7 @@ public class TileFusionCrafter extends TileBase implements ITickable, IPackageCr
 	public int[] requiredInjectors = {0, 0, 0, 0};
 	public boolean isWorking = false;
 	public short progress = 0;
-	public int minTier = -1;
+	public int craftRate = 0;
 	public IRecipeInfoFusion currentRecipe;
 	public List<BlockPos> injectors = new ArrayList<>();
 
@@ -349,10 +349,15 @@ public class TileFusionCrafter extends TileBase implements ITickable, IPackageCr
 			}
 			else if(progress < 2000 && energyStorage.extractEnergy(energyUsage, true) == energyUsage) {
 				energyStorage.extractEnergy(energyUsage, false);
-				if(minTier == -1) {
-					minTier = craftInjectors.stream().mapToInt(c->c.getPedestalTier()).min().orElse(-1);
+				if(craftRate <= 0) {
+					craftRate = craftInjectors.stream().mapToInt(c->{
+						if(c instanceof TileMarkedInjector) {
+							return ((TileMarkedInjector)c).getCraftRate();
+						}
+						return 2 + Math.max(c.getPedestalTier()*2-1, 0);
+					}).min().orElse(2);
 				}
-				progress += 2 + Math.max(0, minTier*2-1);
+				progress += craftRate;
 			}
 		}
 	}
@@ -379,7 +384,7 @@ public class TileFusionCrafter extends TileBase implements ITickable, IPackageCr
 		forEach(tile->((TileMarkedInjector)tile).ejectItem());
 		injectors.clear();
 		isWorking = false;
-		minTier = -1;
+		craftRate = 0;
 		currentRecipe = null;
 		markDirty();
 	}

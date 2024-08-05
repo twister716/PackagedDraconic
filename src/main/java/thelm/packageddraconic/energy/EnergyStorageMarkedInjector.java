@@ -21,7 +21,7 @@ public class EnergyStorageMarkedInjector implements IEnergyStorage {
 		IFusionCraftingInventory inv = tile.getCraftingInventory();
 		if(inv != null) {
 			long ingCost = inv.getIngredientEnergyCost();
-			long storageMaxReceive = ingCost/(300-tile.getPedestalTier()*80);
+			long storageMaxReceive = Math.max(ingCost/tile.getChargeRate(), 1);
 			int energyReceived = (int)Math.min(ingCost-energy, Math.min(storageMaxReceive, maxReceive));
 			if(!simulate) {
 				energy += energyReceived;

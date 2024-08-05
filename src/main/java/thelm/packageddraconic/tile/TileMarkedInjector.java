@@ -21,6 +21,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.common.Loader;
@@ -38,6 +39,9 @@ import thelm.packageddraconic.inventory.InventoryMarkedInjector;
 	@Optional.Interface(iface="appeng.api.networking.security.IActionHost", modid="appliedenergistics2"),
 })
 public class TileMarkedInjector extends TileBase implements ITickable, ICraftingInjector, IGridHost, IActionHost {
+
+	public static int[] chargeRate = {300, 220, 140, 60};
+	public static int[] craftRate = {2, 3, 5, 7};
 
 	public boolean firstTick = true;
 	public EnergyStorageMarkedInjector energyStorage = new EnergyStorageMarkedInjector(this);
@@ -92,6 +96,14 @@ public class TileMarkedInjector extends TileBase implements ITickable, ICrafting
 			}
 		}
 		return tier;
+	}
+
+	public int getChargeRate() {
+		return chargeRate[MathHelper.clamp(getPedestalTier(), 0, chargeRate.length-1)];
+	}
+
+	public int getCraftRate() {
+		return craftRate[MathHelper.clamp(getPedestalTier(), 0, craftRate.length-1)];
 	}
 
 	@Override

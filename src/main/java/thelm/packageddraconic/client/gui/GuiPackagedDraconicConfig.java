@@ -12,7 +12,7 @@ import thelm.packageddraconic.config.PackagedDraconicConfig;
 public class GuiPackagedDraconicConfig extends GuiConfig {
 
 	public GuiPackagedDraconicConfig(GuiScreen parent) {
-		super(parent, getConfigElements(), "packagedDraconic", false, false, getAbridgedConfigPath(PackagedDraconicConfig.config.toString()));
+		super(parent, getConfigElements(), "packageddraconic", false, false, getAbridgedConfigPath(PackagedDraconicConfig.config.toString()));
 	}
 
 	private static List<IConfigElement> getConfigElements() {

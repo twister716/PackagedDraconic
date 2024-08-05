@@ -1,1 +1,3 @@
-Allow loading of invalid recipes and add validity checks  
+Added config options to change crafting speed  
+Made injectors always be able to accept at least 1 energy  
+Fix config event listener  
