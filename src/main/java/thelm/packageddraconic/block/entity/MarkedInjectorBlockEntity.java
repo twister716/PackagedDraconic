@@ -125,7 +125,7 @@ public class MarkedInjectorBlockEntity extends BaseBlockEntity implements IFusio
 	@Override
 	public void setEnergyRequirement(long maxEnergy, long chargeRate) {
 		opStorage.energyReq = maxEnergy;
-		opStorage.chargeRate = chargeRate;
+		opStorage.chargeRate = Math.max(chargeRate, 1);
 		setChanged();
 	}
 

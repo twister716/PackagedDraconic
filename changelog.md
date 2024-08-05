@@ -1,2 +1,1 @@
-Allow loading of invalid recipes and add validity checks  
-Change packet implementation  
+Made injectors always be able to accept at least 1 energy  

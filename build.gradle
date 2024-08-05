@@ -79,7 +79,7 @@ def specVersion = "3"
 def vendor = "thelm"
 
 group = "thelm.packageddraconic"
-version = "3.0.0.11"
+version = "3.0.0.12"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
