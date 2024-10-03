@@ -25,6 +25,7 @@ import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.util.AECableType;
 import appeng.api.util.AEPartLocation;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -58,6 +59,8 @@ import thelm.packagedauto.api.IRecipeInfo;
 import thelm.packagedauto.api.MiscUtil;
 import thelm.packagedauto.energy.EnergyStorage;
 import thelm.packagedauto.tile.TileBase;
+import thelm.packagedauto.tile.TilePackager;
+import thelm.packagedauto.tile.TilePackagerExtension;
 import thelm.packagedauto.tile.TileUnpackager;
 import thelm.packageddraconic.client.gui.GuiFusionCrafter;
 import thelm.packageddraconic.client.sound.FusionCrafterRotationSound;
@@ -415,7 +418,15 @@ public class TileFusionCrafter extends TileBase implements ITickable, IPackageCr
 							for(BlockPos bp : BlockPos.getAllInBox(
 									checkPos.offset(facing),
 									checkPos.offset(facing, distanceInDirection(checkPos, pos, facing)-1))) {
-								if(!world.isAirBlock(bp) && (world.getBlockState(bp).isFullCube() || world.getTileEntity(bp) instanceof TileMarkedInjector)) {
+								IBlockState state = world.getBlockState(bp);
+								TileEntity btile = world.getTileEntity(bp);
+								if(!state.getBlock().isAir(state, world, bp) &&
+										!(btile instanceof TilePackager) &&
+										!(btile instanceof TilePackagerExtension) &&
+										!(btile instanceof TileUnpackager) &&
+										world.getBlockState(bp).isFullCube() ||
+										btile instanceof TileMarkedInjector ||
+										btile instanceof TileFusionCrafter) {
 									return null;
 								}
 							}

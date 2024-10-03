@@ -41,6 +41,10 @@ public class RecipeTypeFusion implements IRecipeType {
 				SLOTS.add(9*i+j);
 			}
 		}
+		for(int i = 3; i < 6; ++i) {
+			SLOTS.add(9*i);
+			SLOTS.add(9*i+8);
+		}
 	}
 
 	@Override
@@ -80,7 +84,7 @@ public class RecipeTypeFusion implements IRecipeType {
 		Map<Integer, ? extends IGuiIngredient<ItemStack>> ingredients = recipeLayout.getItemStacks().getGuiIngredients();
 		int index = 0;
 		int[] slotArray = SLOTS.toIntArray();
-		ArrayUtils.shift(slotArray, 0, 25, 1);
+		ArrayUtils.shift(slotArray, 0, 28, 1);
 		for(Map.Entry<Integer, ? extends IGuiIngredient<ItemStack>> entry : ingredients.entrySet()) {
 			IGuiIngredient<ItemStack> ingredient = entry.getValue();
 			if(ingredient.isInput()) {
@@ -90,7 +94,7 @@ public class RecipeTypeFusion implements IRecipeType {
 				}
 				++index;
 			}
-			if(index >= 49) {
+			if(index >= 55) {
 				break;
 			}
 		}
