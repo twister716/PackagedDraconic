@@ -133,8 +133,8 @@ public class FusionPackageRecipeInfo implements IFusionPackageRecipeInfo {
 		this.input.clear();
 		patterns.clear();
 		int[] slotArray = FusionPackageRecipeType.SLOTS.toIntArray();
-		ArrayUtils.shift(slotArray, 0, 25, 1);
-		for(int i = 0; i < 49; ++i) {
+		ArrayUtils.shift(slotArray, 0, 28, 1);
+		for(int i = 0; i < 55; ++i) {
 			ItemStack toSet = input.get(slotArray[i]);
 			if(!toSet.isEmpty()) {
 				toSet.setCount(1);
@@ -179,7 +179,7 @@ public class FusionPackageRecipeInfo implements IFusionPackageRecipeInfo {
 	public Int2ObjectMap<ItemStack> getEncoderStacks() {
 		Int2ObjectMap<ItemStack> map = new Int2ObjectOpenHashMap<>();
 		int[] slotArray = FusionPackageRecipeType.SLOTS.toIntArray();
-		ArrayUtils.remove(slotArray, 24);
+		ArrayUtils.remove(slotArray, 27);
 		map.put(40, inputCore);
 		for(int i = 0; i < inputInjector.size(); ++i) {
 			map.put(slotArray[i], inputInjector.get(i));

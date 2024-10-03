@@ -49,6 +49,8 @@ import thelm.packagedauto.api.IPackageCraftingMachine;
 import thelm.packagedauto.api.IPackageRecipeInfo;
 import thelm.packagedauto.energy.EnergyStorage;
 import thelm.packagedauto.tile.BaseTile;
+import thelm.packagedauto.tile.PackagerExtensionTile;
+import thelm.packagedauto.tile.PackagerTile;
 import thelm.packagedauto.tile.UnpackagerTile;
 import thelm.packagedauto.util.MiscHelper;
 import thelm.packageddraconic.block.FusionCrafterBlock;
@@ -265,7 +267,15 @@ public class FusionCrafterTile extends BaseTile implements ITickableTileEntity, 
 							for(BlockPos bp : BlockPos.betweenClosed(
 									checkPos.relative(facing),
 									checkPos.relative(facing, distanceInDirection(checkPos, worldPosition, facing)-1))) {
-								if(!level.isEmptyBlock(bp) && level.getBlockState(bp).canOcclude() || level.getBlockEntity(bp) instanceof MarkedInjectorTile || level.getBlockEntity(bp) instanceof FusionCrafterTile) {
+								BlockState state = level.getBlockState(bp);
+								TileEntity btile = level.getBlockEntity(bp);
+								if(!state.getBlock().isAir(state, level, bp) &&
+										!(btile instanceof PackagerTile) &&
+										!(btile instanceof PackagerExtensionTile) &&
+										!(btile instanceof UnpackagerTile) &&
+										state.canOcclude() ||
+										btile instanceof MarkedInjectorTile ||
+										btile instanceof FusionCrafterTile) {
 									return null;
 								}
 							}

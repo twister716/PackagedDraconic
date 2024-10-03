@@ -39,6 +39,10 @@ public class FusionPackageRecipeType implements IPackageRecipeType {
 				SLOTS.add(9*i+j);
 			}
 		}
+		for(int i = 3; i < 6; ++i) {
+			SLOTS.add(9*i);
+			SLOTS.add(9*i+8);
+		}
 	}
 
 	@Override
@@ -77,7 +81,7 @@ public class FusionPackageRecipeType implements IPackageRecipeType {
 		Map<Integer, IGuiIngredientWrapper<ItemStack>> ingredients = recipeLayoutWrapper.getItemStackIngredients();
 		int index = 0;
 		int[] slotArray = SLOTS.toIntArray();
-		ArrayUtils.shift(slotArray, 0, 25, 1);
+		ArrayUtils.shift(slotArray, 0, 28, 1);
 		for(Map.Entry<Integer, IGuiIngredientWrapper<ItemStack>> entry : ingredients.entrySet()) {
 			IGuiIngredientWrapper<ItemStack> ingredient = entry.getValue();
 			if(ingredient.isInput()) {
@@ -87,7 +91,7 @@ public class FusionPackageRecipeType implements IPackageRecipeType {
 				}
 				++index;
 			}
-			if(index >= 49) {
+			if(index >= 55) {
 				break;
 			}
 		}
