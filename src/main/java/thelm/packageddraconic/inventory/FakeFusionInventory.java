@@ -2,7 +2,6 @@ package thelm.packageddraconic.inventory;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.brandon3055.brandonscore.api.TechLevel;
 import com.brandon3055.draconicevolution.api.crafting.IFusionInjector;
