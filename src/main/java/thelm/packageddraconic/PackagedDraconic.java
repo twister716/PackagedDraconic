@@ -1,12 +1,8 @@
 package thelm.packageddraconic;
 
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
-import thelm.packageddraconic.block.FusionCrafterBlock;
 import thelm.packageddraconic.client.event.ClientEventHandler;
 import thelm.packageddraconic.event.CommonEventHandler;
 
