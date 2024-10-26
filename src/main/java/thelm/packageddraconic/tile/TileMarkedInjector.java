@@ -222,15 +222,15 @@ public class TileMarkedInjector extends TileBase implements ITickable, ICrafting
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
+		if(hostHelper != null) {
+			hostHelper.readFromNBT(nbt);
+		}
 		super.readFromNBT(nbt);
 		energyStorage.readFromNBT(nbt);
 		crafterPos = null;
 		if(nbt.hasKey("CrafterPos")) {
 			int[] posArray = nbt.getIntArray("CrafterPos");
 			crafterPos = new BlockPos(posArray[0], posArray[1], posArray[2]);
-		}
-		if(hostHelper != null) {
-			hostHelper.readFromNBT(nbt);
 		}
 	}
 

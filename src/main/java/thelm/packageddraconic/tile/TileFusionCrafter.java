@@ -576,6 +576,9 @@ public class TileFusionCrafter extends TileBase implements ITickable, IPackageCr
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
+		if(hostHelper != null) {
+			hostHelper.readFromNBT(nbt);
+		}
 		super.readFromNBT(nbt);
 		progress = nbt.getShort("Progress");
 		currentRecipe = null;
@@ -592,9 +595,6 @@ public class TileFusionCrafter extends TileBase implements ITickable, IPackageCr
 				BlockPos pos = new BlockPos(posArray[0], posArray[1], posArray[2]);
 				injectors.add(pos);
 			}
-		}
-		if(hostHelper != null) {
-			hostHelper.readFromNBT(nbt);
 		}
 	}
 
